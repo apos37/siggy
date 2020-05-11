@@ -1,0 +1,28 @@
+//CATEGORY IDS:
+  //Line Spacing                          lns
+  //Word Spacing                          wds
+  //Letter Spacing                        lts
+  //Margins                               mgn
+  //Baseline                              bln
+  //Zones General                         zng
+  //Zones Upper                           znu
+  //Zones Middle                          znm
+  //Zones Lower                           znl
+  //Rhythm General                        rgl
+  //Rhythm Tension/Pressure               rtp
+  //Rhythm Speed                          rsd
+  //Rhythm Impulse Patterns/Airstrokes    rip
+  //Rhythm Form                           rfm
+  //Rhythm Slant                          rst
+  //Style                                 sty
+  //Signature General                     sgl
+  //Signature Size                        ssz
+  //Signature Style                       sst
+  //Signature Capitals                    scp
+  //Personal pronoun I (PPI)              ppi
+  //Beginning & Ending Strokes            bes
+  //Punctuation                           pnc
+  //Hooks                                 huk
+  //Diacritics – i-Dots                   idt
+  //Diacritics – t-Crosses                tcr
+  //Other Letters & Symbols               ols
