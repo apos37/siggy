@@ -4,6 +4,7 @@ import '../util/dbhelper.dart';
 import '../util/bouncypageroute.dart';
 import 'archivelist.dart';
 import 'dictionarypage.dart';
+import 'glossarypage.dart';
 import 'resources.dart';
 
 class Home extends StatefulWidget {
@@ -37,14 +38,28 @@ class _HomeState extends State<Home> {
             actions: <Widget>[
               IconButton(
                 icon: const Icon(Icons.import_contacts),
-                tooltip: 'Dictionary',
+                tooltip: 'Glossary',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    BouncyPageRoute(
+                      widget: GlossaryPage(),
+                      curve: Curves.fastLinearToSlowEaseIn,
+                      seconds: 1,
+                    ),
+                  );
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.lightbulb_outline),
+                tooltip: 'Meanings',
                 onPressed: () {
                   Navigator.push(
                     context,
                     BouncyPageRoute(
                       widget: DictionaryPage(),
-                      curve: Curves.elasticInOut,
-                      seconds: 2,
+                      curve: Curves.fastLinearToSlowEaseIn,
+                      seconds: 1,
                     ),
                   );
                 },

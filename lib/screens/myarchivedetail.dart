@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -77,6 +78,8 @@ class _ArchiveDetailState extends State<ArchiveDetail> {
   File _image;
   //conclusion
   TextEditingController conclusionController = TextEditingController();
+  //scroll to top
+  final ScrollController _homeController = ScrollController();
 
   getImageFile(ImageSource source) async {
 //    String imgString;
@@ -205,7 +208,7 @@ class _ArchiveDetailState extends State<ArchiveDetail> {
     //Display name required
     String validateName(String value) {
       if (!(value.length > 5) && value.isNotEmpty) {
-        return "Password should contains more then 5 character";
+        return "Name should contains more then 5 character";
       }
       return null;
     }
@@ -433,6 +436,20 @@ class _ArchiveDetailState extends State<ArchiveDetail> {
                 ],
               ),
             ),
+//            SizedBox(height: 10),
+//            Padding(
+//              padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+//              child: TextField(
+//                controller: obsResultController,
+//                style: textStyle,
+//                onChanged: (value) => updateObsResults(),
+//                decoration: InputDecoration(
+//                    labelText: 'Result Code (Leave Blank)',
+//                    labelStyle: textStyle,
+//                    border: OutlineInputBorder(
+//                        borderRadius: BorderRadius.circular(5.0))),
+//              ),
+//            ),
             SizedBox(height: 10),
           ],
         );
@@ -452,7 +469,7 @@ class _ArchiveDetailState extends State<ArchiveDetail> {
             child: Column(
               children: <Widget>[
                 Text(
-                    'In each section, select the one pattern you feel is MOST like the writing sample. Avoid selecting more than one option per section unless there are several instances of each of them. If your sample doesn\'t include any of the patterns listed, feel free to skip the section and move on. Tap on the "Learn more" button at the top of each section for help. Long-press the "Learn more" button to see general meanings. Items that turn red when selected are considered Danger Signs.'),
+                    'In each section, select the one pattern you feel is MOST like the writing sample. Avoid selecting more than one option per section unless there are several instances of each of them. If your sample doesn\'t include any of the patterns listed, feel free to skip the section and move on. Tap on the "Learn more" button at the top of each section for help. Long-press the "Learn more" button to see general meanings. Items that turn red when selected are considered Danger Signs. The average person has less than 4 Danger Signs.'),
               ],
             ),
           ),
@@ -473,7 +490,6 @@ class _ArchiveDetailState extends State<ArchiveDetail> {
     Widget callObservations() {
       LearnMoreButton learnMoreButton = LearnMoreButton(currentPage);
       if (currentPage > 0) {
-        bool _isSelected = false;
         return new Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -512,54 +528,35 @@ class _ArchiveDetailState extends State<ArchiveDetail> {
                   }
                 }
 
+                String getFinding = observations.getCategorySpecificFinding(
+                    dictionaryProperties.getSpecificCategory(currentPage),
+                    index);
+
+                var doesFindingExist = archiveObs.contains(observations
+                    .getObsId(getFinding)
+                    .toString()
+                    .padLeft(3, '0'));
+
                 return CheckboxListTile(
-                  title: Text(
-                    observations.getCategorySpecificFinding(
-                        dictionaryProperties.getSpecificCategory(currentPage),
-                        index),
-                  ),
+                  title: Text(getFinding),
                   activeColor: dangerColor(),
                   checkColor: Colors.white,
-                  value: archiveObs.contains(observations
-                      .getObsId(observations.getCategorySpecificFinding(
-                          dictionaryProperties.getSpecificCategory(currentPage),
-                          index))
-                      .toString()
-                      .padLeft(3, '0')),
+                  value: doesFindingExist,
                   onChanged: (bool newValue) {
-                    setState(() {
-                      _isSelected = newValue;
-                    });
-                    if (archiveObs.contains(observations
-                        .getObsId(observations.getCategorySpecificFinding(
-                            dictionaryProperties
-                                .getSpecificCategory(currentPage),
-                            index))
-                        .toString()
-                        .padLeft(3, '0'))) {
+                    setState(() {});
+                    if (doesFindingExist) {
                       archiveObs.remove(observations
-                          .getObsId(observations.getCategorySpecificFinding(
-                              dictionaryProperties
-                                  .getSpecificCategory(currentPage),
-                              index))
+                          .getObsId(getFinding)
                           .toString()
                           .padLeft(3, '0'));
                     } else {
                       archiveObs.add(observations
-                          .getObsId(observations.getCategorySpecificFinding(
-                              dictionaryProperties
-                                  .getSpecificCategory(currentPage),
-                              index))
+                          .getObsId(getFinding)
                           .toString()
                           .padLeft(3, '0'));
                     }
                   },
-                  selected: archiveObs.contains(observations
-                      .getObsId(observations.getCategorySpecificFinding(
-                          dictionaryProperties.getSpecificCategory(currentPage),
-                          index))
-                      .toString()
-                      .padLeft(3, '0')),
+                  selected: doesFindingExist,
                 );
               },
               shrinkWrap: true,
@@ -634,14 +631,23 @@ class _ArchiveDetailState extends State<ArchiveDetail> {
           });
           final String concatenateResults = concatenate.toString();
 
-          //add conclusions
-          final String resultsWithConclusion = concatenateResults +
-              '\n\n\nMy Conclusions:\n\n' +
-              archive.conclusion;
+          String shareResults = '';
+          if (archive.conclusion != null) {
+            shareResults = concatenateResults +
+                '\n\n\nMy Conclusions:\n\n' +
+                archive.conclusion;
+          } else {
+            shareResults = concatenateResults;
+          }
+
+          //add obsResults string
+          final String resultsWithObsResults = shareResults +
+              '\n\n\nResults Code (For Admin Only):\n' +
+              archive.obsResult;
 
           //create body and subject
           final String bodyText =
-              'My handwriting analysis observations:\n\n$resultsWithConclusion\n\nGenerated using the Siggy mobile app.';
+              'My handwriting analysis observations:\n\n$resultsWithObsResults\n\nGenerated using the Siggy mobile app.';
           final String subject = 'Handwriting Analysis for $subjectInfo';
           Share.share(
             bodyText,
@@ -1149,10 +1155,17 @@ class _ArchiveDetailState extends State<ArchiveDetail> {
                       currentPage = ttlDictionaryCount;
                     });
                   },
-                  child: Text(
-                    pageBottomBarText(),
-                    style: TextStyle(
-                      color: Colors.white,
+                  behavior: HitTestBehavior.translucent,
+                  child: Container(
+                    height: 40,
+                    width: 250,
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Text(
+                      pageBottomBarText(),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
@@ -1454,5 +1467,9 @@ class _ArchiveDetailState extends State<ArchiveDetail> {
 
   void updateConclusion() {
     archive.conclusion = conclusionController.text;
+  }
+
+  void updateObsResults() {
+    archive.obsResult = obsResultController.text;
   }
 }

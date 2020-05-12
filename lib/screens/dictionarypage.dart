@@ -44,7 +44,6 @@ class _DictionaryPageState extends State<DictionaryPage> {
     return results;
   }
 
-  //TODO: Convert this hard-coded list into the actual dictionaryProps list with the View All option first
   final _categories = [
     'View All',
     'Line Spacing',
@@ -74,6 +73,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
     'Diacritics - i-Dots',
     'Diacritics - t-Crosses',
     'Other Letters & Symbols',
+    'Danger Signs'
   ];
 
   Widget printDefinitions(indexArg) {
@@ -165,6 +165,86 @@ class _DictionaryPageState extends State<DictionaryPage> {
           ),
         ),
       );
+    } else if (dropdownValue == 'Danger Signs') {
+      results = Expanded(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 4.0),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Danger Signs',
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                        WidgetSpan(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 5.0),
+                            child: Icon(
+                              Icons.warning,
+                              color: Colors.red,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 20.0, bottom: 15.0),
+                    child: Container(
+                      height: 1.0,
+                      width: 130.0,
+                      color: Colors.teal[300],
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: observations.getDangerSigns().length,
+                      itemBuilder: (BuildContext context, int index) {
+                        // return row
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                observations.getDangerSignFinding(index) + ':',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                observations.getDangerSignMeaning(index),
+                                style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
     } else {
       int parentIndex = dictionaryProperties.getDictionaryId(dropdownValue);
       results = Expanded(
@@ -211,7 +291,7 @@ class _DictionaryPageState extends State<DictionaryPage> {
       child: SafeArea(
         child: Scaffold(
           appBar: new AppBar(
-            title: new Text('Dictionary'),
+            title: new Text('Meanings'),
             leading: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Container(
@@ -231,8 +311,8 @@ class _DictionaryPageState extends State<DictionaryPage> {
                 },
               ),
               IconButton(
-                icon: const Icon(Icons.home),
-                tooltip: 'Home',
+                icon: const Icon(Icons.close),
+                tooltip: 'Go Back',
                 onPressed: () {
                   Navigator.pop(context);
                 },

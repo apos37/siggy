@@ -116,8 +116,8 @@ class _ResourcesState extends State<Resources> {
             ),
             actions: <Widget>[
               IconButton(
-                icon: const Icon(Icons.home),
-                tooltip: 'Home',
+                icon: const Icon(Icons.close),
+                tooltip: 'Go Back',
                 onPressed: () {
                   Navigator.pop(context);
                 },

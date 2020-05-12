@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:graphologyapp/dictionary/dictionaryprops.dart';
+import '../dictionary/dictionaryprops.dart';
+import '../screens/glossarypage.dart';
+import '../util/bouncypageroute.dart';
 
 DictionaryProperties dictionaryProperties = DictionaryProperties();
 
@@ -12,12 +14,6 @@ class LearnMoreButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: () {
-        Widget okButton = FlatButton(
-          child: Text("OK"),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        );
         AlertDialog meaningDialog = AlertDialog(
             title: Text(
               dictionaryProperties.getSpecificName(currentPage) + ':',
@@ -34,7 +30,12 @@ class LearnMoreButton extends StatelessWidget {
               ),
             ),
             actions: [
-              okButton,
+              FlatButton(
+                child: Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
             ]);
         showDialog(
           context: context,
@@ -43,12 +44,6 @@ class LearnMoreButton extends StatelessWidget {
       },
       child: FlatButton.icon(
         onPressed: () {
-          Widget okButton = FlatButton(
-            child: Text("OK"),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          );
           AlertDialog alertDialog = AlertDialog(
               title: Text(
                 dictionaryProperties.getSpecificName(currentPage) + ':',
@@ -67,7 +62,25 @@ class LearnMoreButton extends StatelessWidget {
                 ),
               ),
               actions: [
-                okButton,
+                FlatButton(
+                  child: Text("OPEN GLOSSARY"),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      BouncyPageRoute(
+                        widget: GlossaryPage(),
+                        curve: Curves.fastLinearToSlowEaseIn,
+                        seconds: 1,
+                      ),
+                    );
+                  },
+                ),
+                FlatButton(
+                  child: Text("OK"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
               ]);
           showDialog(
             context: context,

@@ -16,7 +16,6 @@ class DbHelper {
   String colAge = 'age';
   String colObsResult = 'obsResult';
   String colUploadImage = 'uploadImage';
-  String colImageThumb = 'imageThumb';
   String colConclusion = 'conclusion';
 
   DbHelper._internal();
@@ -43,7 +42,7 @@ class DbHelper {
 
   void _createDb(Database db, int newVersion) async {
     await db.execute(
-        "CREATE TABLE $tblArchive($colId INTEGER PRIMARY KEY, $colDate TEXT, $colType TEXT, $colDisplayName TEXT, $colGender TEXT, $colAge TEXT, $colObsResult TEXT, $colUploadImage TEXT, $colImageThumb TEXT, $colConclusion TEXT)");
+        "CREATE TABLE $tblArchive($colId INTEGER PRIMARY KEY, $colDate TEXT, $colType TEXT, $colDisplayName TEXT, $colGender TEXT, $colAge TEXT, $colObsResult TEXT, $colUploadImage TEXT, $colConclusion TEXT)");
   }
 
   Future<int> insertArchive(Archive archive) async {

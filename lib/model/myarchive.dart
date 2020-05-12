@@ -1,4 +1,4 @@
-//date, type, displayName, gender, age, uploadImage, imageThumb, obsResult
+//date, type, displayName, gender, age, uploadImage, obsResult
 class Archive {
   int _id;
   String _date;
@@ -8,15 +8,14 @@ class Archive {
   String _age;
   String _obsResult;
   String _uploadImage;
-  String _imageThumb;
   String _conclusion;
 
   Archive(this._date, this._type, this._displayName, this._gender, this._age,
       this._obsResult,
-      [this._uploadImage, this._imageThumb, this._conclusion]);
+      [this._uploadImage, this._conclusion]);
   Archive.withId(this._id, this._date, this._type, this._displayName,
       this._gender, this._age, this._obsResult,
-      [this._uploadImage, this._imageThumb, this._conclusion]);
+      [this._uploadImage, this._conclusion]);
 
   int get id => _id;
   String get date => _date;
@@ -26,7 +25,6 @@ class Archive {
   String get age => _age;
   String get obsResult => _obsResult;
   String get uploadImage => _uploadImage;
-  String get imageThumb => _imageThumb;
   String get conclusion => _conclusion;
 
   // ignore: unnecessary_getters_setters
@@ -65,11 +63,6 @@ class Archive {
   }
 
   // ignore: unnecessary_getters_setters
-  set imageThumb(String newImageThumb) {
-    _imageThumb = newImageThumb;
-  }
-
-  // ignore: unnecessary_getters_setters
   set conclusion(String newConclusion) {
     _conclusion = newConclusion;
   }
@@ -83,7 +76,6 @@ class Archive {
     map['age'] = _age;
     map['obsResult'] = _obsResult;
     map['uploadImage'] = _uploadImage;
-    map['imageThumb'] = _imageThumb;
     map['conclusion'] = _conclusion;
     if (_id != null) {
       map['id'] = _id;
@@ -100,7 +92,6 @@ class Archive {
     this._age = o['age'];
     this._obsResult = o['obsResult'];
     this._uploadImage = o['uploadImage'];
-    this._imageThumb = o['imageThumb'];
     this._conclusion = o['conclusion'];
   }
 }

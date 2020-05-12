@@ -597,7 +597,7 @@ class Observations {
     Observation(
       c: 'znm',
       d: false,
-      f: 'MIDDLE zone medium height and weight',
+      f: 'MIDDLE zone medium height and width',
       m: 'Well adjusted. Realistic. Generally conventional. Adequate self-confidence. Inner security.',
     ),
     Observation(
@@ -1178,7 +1178,7 @@ class Observations {
     Observation(
       c: 'rip',
       d: false,
-      f: 'LIGATURES soldering (when the writer for back and fixes broken ligatures)',
+      f: 'LIGATURES soldering (when the writer goes back and fixes broken ligatures)',
       m: 'Anxious to make things look better than they are. Doesn\'t want to be seen as wrong. Retouching makes matters worse.',
     ),
     //////////////////////// RHYTHM FORM ////////////////////////
@@ -2816,5 +2816,17 @@ class Observations {
   int getObsId(String find) {
     int obsIndex = _observationBank.indexWhere((f) => f.finding == find);
     return obsIndex;
+  }
+
+  List<Observation> getDangerSigns() {
+    return _observationBank.where((i) => i.danger == true).toList();
+  }
+
+  String getDangerSignFinding(int index) {
+    return getDangerSigns()[index].finding;
+  }
+
+  String getDangerSignMeaning(int index) {
+    return getDangerSigns()[index].meaning;
   }
 }
