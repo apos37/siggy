@@ -22,6 +22,7 @@ Observations observations = Observations();
 
 final List<String> archiveObs = [];
 int currentPage = 0;
+ValueNotifier<int> _changePage = ValueNotifier(currentPage);
 String currentPageDictionary = 'none';
 bool lastPage = false;
 bool showFindings = false;
@@ -514,6 +515,7 @@ class _ArchiveDetailState extends State<ArchiveDetail> {
               ),
             ),
             ListView.builder(
+              controller: _homeController,
               itemCount: observations.getCategoryCount(
                   dictionaryProperties.getSpecificCategory(currentPage)),
               itemBuilder: (BuildContext context, int index) {
@@ -1032,9 +1034,9 @@ class _ArchiveDetailState extends State<ArchiveDetail> {
                 ),
                 IconButton(
                   color: Colors.white,
-                  icon: Icon(Icons.delete),
+                  icon: Icon(Icons.close),
                   onPressed: () {
-                    delete();
+                    back();
                   },
                 )
               ],
@@ -1089,9 +1091,9 @@ class _ArchiveDetailState extends State<ArchiveDetail> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: Icon(Icons.close),
                   onPressed: () {
-                    delete();
+                    back();
                   },
                   color: Colors.white,
                 ),
@@ -1140,13 +1142,23 @@ class _ArchiveDetailState extends State<ArchiveDetail> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                IconButton(
-                  color: Colors.white,
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    setState(() {
-                      currentPage--;
-                    });
+                ValueListenableBuilder(
+                  valueListenable: _changePage,
+                  builder: (BuildContext context, int value, Widget child) {
+                    return IconButton(
+                      color: Colors.white,
+                      icon: Icon(Icons.arrow_back),
+                      onPressed: () {
+                        _homeController.animateTo(
+                          0.0,
+                          curve: Curves.easeOut,
+                          duration: const Duration(milliseconds: 300),
+                        );
+                        setState(() {
+                          currentPage--;
+                        });
+                      },
+                    );
                   },
                 ),
                 GestureDetector(
@@ -1169,13 +1181,23 @@ class _ArchiveDetailState extends State<ArchiveDetail> {
                     ),
                   ),
                 ),
-                IconButton(
-                  color: Colors.white,
-                  icon: Icon(Icons.arrow_forward),
-                  onPressed: () {
-                    setState(() {
-                      currentPage++;
-                    });
+                ValueListenableBuilder(
+                  valueListenable: _changePage,
+                  builder: (BuildContext context, int value, Widget child) {
+                    return IconButton(
+                      color: Colors.white,
+                      icon: Icon(Icons.arrow_forward),
+                      onPressed: () {
+                        _homeController.animateTo(
+                          0.0,
+                          curve: Curves.easeOut,
+                          duration: const Duration(milliseconds: 300),
+                        );
+                        setState(() {
+                          currentPage++;
+                        });
+                      },
+                    );
                   },
                 ),
               ],

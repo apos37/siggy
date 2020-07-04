@@ -2768,7 +2768,9 @@ class Observations {
   }
 
   List<Observation> getQueryResults(String queryArg) {
-    return _observationBank.where((i) => i.finding.contains(queryArg)).toList();
+    return _observationBank
+        .where((i) => i.finding.toLowerCase().contains(queryArg.toLowerCase()))
+        .toList();
   }
 
   String getQueryFinding(String queryArg, int index) {

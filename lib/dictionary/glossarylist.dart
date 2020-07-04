@@ -210,7 +210,7 @@ class Glossary {
     ),
     GlossaryItem(
       i: 'given name',
-      d: 'first name.',
+      d: 'First name.',
     ),
     GlossaryItem(
       i: 'ascending',
@@ -342,7 +342,9 @@ class Glossary {
   }
 
   List<GlossaryItem> getQueryResults(String queryArg) {
-    return _glossaryBank.where((i) => i.item.contains(queryArg)).toList();
+    return _glossaryBank
+        .where((i) => i.item.toLowerCase().contains(queryArg.toLowerCase()))
+        .toList();
   }
 
   String getQueryItem(String queryArg, int index) {

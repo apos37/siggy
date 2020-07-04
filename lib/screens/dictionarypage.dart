@@ -467,9 +467,6 @@ class DataSearch extends SearchDelegate<String> {
   @override
   Widget buildSuggestions(BuildContext context) {
     // show when someone searches for anything
-//    final suggestionList = query.isEmpty
-//        ? observations.getFindings(query).toList()
-//        : observations.getFindings(query).toList();
     int queryCount;
     if (query.isEmpty) {
       queryCount = 0;
